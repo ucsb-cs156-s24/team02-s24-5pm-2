@@ -1,4 +1,13 @@
-# STARTER-team02
+# team02-s24-5pm-2
+
+|   Name    | GitHub Id          |  Database                        | 
+|-----------|--------------------|----------------------------------|
+| Richard   | richardfang888     | `Menu Item Reviews`              |
+| Abhishek  | abhishekambastha04 | `UCSB Dining Commons Menu Items` |
+| Nico      | nicoshinozaki      | `Articles`                       | 
+| Kevin     | ukyl               | `Recommendation Requests`        | 
+| Aaron     | SloggyYoggy        | `Help Requests`                  |
+| Nevin     | NevMan1            | `UCSB Organizations`             |
 
 Instructions: <https://ucsb-cs156.github.io/s24/lab/team02.html>
 
@@ -8,8 +17,8 @@ TODO: Add a link to the deployed Dokku app for your team here, e.g.
 
 Deployments:
 
-* Prod: <https://team02.dokku-17.cs.ucsb.edu>
-* QA: <https://team02-qa.dokku-17.cs.ucsb.edu>
+* Prod: <https://team02.dokku-10.cs.ucsb.edu>
+* QA: <https://team02-qa.dokku-10.cs.ucsb.edu>
 
 # Setup before running application
 
