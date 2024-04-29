@@ -1,7 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.controllers.ApiController;
-import edu.ucsb.cs156.example.entities.UCSBDate;
+//import edu.ucsb.cs156.example.entities.UCSBDate;
 //import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItems;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
@@ -94,4 +94,22 @@ public class UCSBDiningCommonsMenuItemsController extends ApiController{
         return genericMessage("UCSBDiningCommonsMenuItems with id %s deleted".formatted(id));
     }
 
+    @Operation(summary= "Update a single dining commons menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBDiningCommonsMenuItems updateUCSBDiningCommonsMenuItems(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItems incoming) {
+
+        UCSBDiningCommonsMenuItems ucsbDiningCommonsMenuItems = ucsbDiningCommonsMenuItemsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItems.class, id));
+
+        ucsbDiningCommonsMenuItems.setDiningCommonsCode(incoming.getDiningCommonsCode());
+        ucsbDiningCommonsMenuItems.setName(incoming.getName());
+        ucsbDiningCommonsMenuItems.setStation(incoming.getStation());
+
+        ucsbDiningCommonsMenuItemsRepository.save(ucsbDiningCommonsMenuItems);
+
+        return ucsbDiningCommonsMenuItems;
+    }
 }

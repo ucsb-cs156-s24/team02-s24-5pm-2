@@ -3,9 +3,11 @@ package edu.ucsb.cs156.example.controllers;
 import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 //import main.java.edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
+//import main.java.edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
 //import edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
 //import main.java.edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
 import edu.ucsb.cs156.example.ControllerTestCase;
+//import edu.ucsb.cs156.example.entities.UCSBDate;
 //import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItems;
 //import edu.ucsb.cs156.example.repositories.UCSBDateRepository;
@@ -201,7 +203,7 @@ public class UCSBDiningCommonsMenuItemsControllerTests extends ControllerTestCas
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_can_delete_a_date() throws Exception {
+        public void admin_can_delete_a_dining_commons_menu_items() throws Exception {
                 // arrange
 
                // LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
@@ -230,7 +232,7 @@ public class UCSBDiningCommonsMenuItemsControllerTests extends ControllerTestCas
         
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_tries_to_delete_non_existant_ucsbdate_and_gets_right_error_message()
+        public void admin_tries_to_delete_non_existant_ucsbdiningcommonsmenuitems_and_gets_right_error_message()
                         throws Exception {
                 // arrange
 
@@ -246,5 +248,84 @@ public class UCSBDiningCommonsMenuItemsControllerTests extends ControllerTestCas
                 verify(ucsbDiningCommonsMenuItemsRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("UCSBDiningCommonsMenuItems with id 15 not found", json.get("message"));
+        }
+
+        // Tests for PUT /api/ucsbdiningcommonsmenuitems?id=... 
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_edit_an_existing_ucsbdiningcommonsmenuitems() throws Exception {
+                // arrange
+
+                //LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+                //LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
+
+                // dateOrig
+                UCSBDiningCommonsMenuItems ucsbD1 = UCSBDiningCommonsMenuItems.builder()
+               .name("BakedPestoPastawithChicken")
+               .station("EntreeSpecials")
+               .diningCommonsCode("ortega")
+               .build(); 
+
+               //dateEdited
+               UCSBDiningCommonsMenuItems ucsbD2 = UCSBDiningCommonsMenuItems.builder()
+               .name("ChickenCaesarSalad")
+               .station("Entrees")
+               .diningCommonsCode("portola")
+               .build(); 
+
+                String requestBody = mapper.writeValueAsString(ucsbD2);
+
+                when(ucsbDiningCommonsMenuItemsRepository.findById(eq(67L))).thenReturn(Optional.of(ucsbD1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/ucsbdiningcommonsmenuitems?id=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(ucsbDiningCommonsMenuItemsRepository, times(1)).findById(67L);
+                verify(ucsbDiningCommonsMenuItemsRepository, times(1)).save(ucsbD2); // should be saved with correct user
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+        
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_ucsbdiningcommonsmenuitems_that_does_not_exist() throws Exception {
+                // arrange
+
+                //LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+                //ucsbD3
+                UCSBDiningCommonsMenuItems ucsbD3 = UCSBDiningCommonsMenuItems.builder()
+               .name("BakedPestoPastawithChicken")
+               .station("EntreeSpecials")
+               .diningCommonsCode("ortega")
+               .build(); 
+
+
+                String requestBody = mapper.writeValueAsString(ucsbD3);
+
+                when(ucsbDiningCommonsMenuItemsRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/ucsbdiningcommonsmenuitems?id=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(ucsbDiningCommonsMenuItemsRepository, times(1)).findById(67L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("UCSBDiningCommonsMenuItems with id 67 not found", json.get("message"));
+
         }
 }
