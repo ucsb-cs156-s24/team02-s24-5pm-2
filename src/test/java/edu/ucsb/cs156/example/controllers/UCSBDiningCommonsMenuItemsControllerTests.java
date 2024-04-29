@@ -2,10 +2,10 @@ package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
+//import main.java.edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
 //import edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
 //import main.java.edu.ucsb.cs156.example.controllers.UCSBDiningCommonsMenuItemsController;
 import edu.ucsb.cs156.example.ControllerTestCase;
-//import edu.ucsb.cs156.example.entities.UCSBDate;
 //import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItems;
 //import edu.ucsb.cs156.example.repositories.UCSBDateRepository;
@@ -195,5 +195,56 @@ public class UCSBDiningCommonsMenuItemsControllerTests extends ControllerTestCas
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("EntityNotFoundException", json.get("type"));
                 assertEquals("UCSBDiningCommonsMenuItems with id 7 not found", json.get("message"));
+        }
+
+        // Tests for DELETE /api/ucsbdiningcommonsmenuitems?id=... 
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_delete_a_date() throws Exception {
+                // arrange
+
+               // LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+
+               UCSBDiningCommonsMenuItems ucsbD1 = UCSBDiningCommonsMenuItems.builder()
+               .name("BakedPestoPastawithChicken")
+               .station("EntreeSpecials")
+               .diningCommonsCode("ortega")
+               .build(); 
+
+                when(ucsbDiningCommonsMenuItemsRepository.findById(eq(15L))).thenReturn(Optional.of(ucsbD1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/ucsbdiningcommonsmenuitems?id=15")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(ucsbDiningCommonsMenuItemsRepository, times(1)).findById(15L);
+                verify(ucsbDiningCommonsMenuItemsRepository, times(1)).delete(any());
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("UCSBDiningCommonsMenuItems with id 15 deleted", json.get("message"));
+        }
+        
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_tries_to_delete_non_existant_ucsbdate_and_gets_right_error_message()
+                        throws Exception {
+                // arrange
+
+                when(ucsbDiningCommonsMenuItemsRepository.findById(eq(15L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/ucsbdiningcommonsmenuitems?id=15")
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(ucsbDiningCommonsMenuItemsRepository, times(1)).findById(15L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("UCSBDiningCommonsMenuItems with id 15 not found", json.get("message"));
         }
 }
