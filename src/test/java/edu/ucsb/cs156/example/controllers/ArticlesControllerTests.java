@@ -116,10 +116,10 @@ public class ArticlesControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void an_admin_user_can_post_a_new_article() throws Exception {
+        public void an_admin_user_can_post_a_new_articles() throws Exception {
                 // arrange
 
-                LocalDateTime ldt1 = LocalDateTime.parse("2024-04-47T00:00:00");
+                LocalDateTime ldt1 = LocalDateTime.parse("2024-04-27T00:00:00");
 
                 Articles articles1 = Articles.builder()
                                 .title("Article1")
@@ -198,7 +198,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 verify(articlesRepository, times(1)).findById(eq(7L));
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("EntityNotFoundException", json.get("type"));
-                assertEquals("Article with id 7 not found", json.get("message"));
+                assertEquals("Articles with id 7 not found", json.get("message"));
         }
 
 
@@ -252,7 +252,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 // assert
                 verify(articlesRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Article with id 15 not found", json.get("message"));
+                assertEquals("Articles with id 15 not found", json.get("message"));
         }
 
         // Tests for PUT /api/articles?id=... 
@@ -333,7 +333,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 // assert
                 verify(articlesRepository, times(1)).findById(67L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("Article with id 67 not found", json.get("message"));
+                assertEquals("Articles with id 67 not found", json.get("message"));
 
         }
 }
