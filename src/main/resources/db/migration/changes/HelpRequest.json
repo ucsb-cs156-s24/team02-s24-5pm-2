@@ -2,7 +2,7 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "Helprequest-1",
+          "id": "HelpRequest-1",
           "author": "AaronD",
           "preConditions": [
             {
@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "HELPREQUESTS"
+                    "tableName": "HELPREQUEST"
                   }
                 }
               ]
@@ -73,7 +73,7 @@
                     }
                   }
                 ],
-                "tableName": "HELPREQUESTS"
+                "tableName": "HELPREQUEST"
               }
             }
           ]
