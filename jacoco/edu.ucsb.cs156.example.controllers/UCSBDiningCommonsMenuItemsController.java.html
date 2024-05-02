@@ -81,5 +81,18 @@ import java.time.LocalDateTime;
 
 <span class="fc" id="L82">        return ucsbDiningCommonsMenuItems;</span>
     }
+
+    @Operation(summary= &quot;Delete a UCSBDiningCommonsMenuItems&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteUCSBDiningCommonsMenuItems(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L90">        UCSBDiningCommonsMenuItems ucsbD1 = ucsbDiningCommonsMenuItemsRepository.findById(id)</span>
+<span class="fc" id="L91">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItems.class, id));</span>
+
+<span class="fc" id="L93">        ucsbDiningCommonsMenuItemsRepository.delete(ucsbD1);</span>
+<span class="fc" id="L94">        return genericMessage(&quot;UCSBDiningCommonsMenuItems with id %s deleted&quot;.formatted(id));</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
