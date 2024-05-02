@@ -74,5 +74,50 @@ import java.time.LocalDateTime;
 
 <span class="fc" id="L75">        return savedRec;</span>
     }
+
+    @Operation(summary= &quot;Get a single Recommendation Letter request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public RecommendationRequest getById(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L83">        RecommendationRequest rec = recommendationRequestRepository.findById(id)</span>
+<span class="fc" id="L84">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L86">        return rec;</span>
+    }
+
+    @Operation(summary= &quot;Delete a single Recommendation Letter request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteRecommendationRequest(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L94">        RecommendationRequest rec = recommendationRequestRepository.findById(id)</span>
+<span class="fc" id="L95">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L97">        recommendationRequestRepository.delete(rec);</span>
+<span class="fc" id="L98">        return genericMessage(&quot;RecommendationRequest with id %s deleted&quot;.formatted(id));</span>
+    }
+
+    @Operation(summary= &quot;Update a single Recommendation Letter request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public RecommendationRequest updateRecommendationRequest(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid RecommendationRequest incoming) {
+
+<span class="fc" id="L108">        RecommendationRequest rec = recommendationRequestRepository.findById(id)</span>
+<span class="fc" id="L109">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="fc" id="L111">        rec.setRequesterEmail(incoming.getRequesterEmail());</span>
+<span class="fc" id="L112">        rec.setProfessorEmail(incoming.getProfessorEmail());</span>
+<span class="fc" id="L113">        rec.setExplanation(incoming.getExplanation());</span>
+<span class="fc" id="L114">        rec.setDateRequested(incoming.getDateRequested());</span>
+<span class="fc" id="L115">        rec.setDateNeeded(incoming.getDateNeeded());</span>
+<span class="fc" id="L116">        rec.setDone(incoming.getDone());</span>
+
+<span class="fc" id="L118">        recommendationRequestRepository.save(rec);</span>
+
+<span class="fc" id="L120">        return rec;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
