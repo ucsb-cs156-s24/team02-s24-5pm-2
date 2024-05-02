@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UCSBDiningCommonsMenuItemsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team02</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.example.controllers</a> &gt; <span class="el_source">UCSBDiningCommonsMenuItemsController.java</span></div><h1>UCSBDiningCommonsMenuItemsController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.controllers.ApiController;
-import edu.ucsb.cs156.example.entities.UCSBDate;
+//import edu.ucsb.cs156.example.entities.UCSBDate;
 //import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItems;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
@@ -94,5 +94,23 @@ import java.time.LocalDateTime;
 <span class="fc" id="L94">        return genericMessage(&quot;UCSBDiningCommonsMenuItems with id %s deleted&quot;.formatted(id));</span>
     }
 
+    @Operation(summary= &quot;Update a single dining commons menu item&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public UCSBDiningCommonsMenuItems updateUCSBDiningCommonsMenuItems(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItems incoming) {
+
+<span class="fc" id="L104">        UCSBDiningCommonsMenuItems ucsbDiningCommonsMenuItems = ucsbDiningCommonsMenuItemsRepository.findById(id)</span>
+<span class="fc" id="L105">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItems.class, id));</span>
+
+<span class="fc" id="L107">        ucsbDiningCommonsMenuItems.setDiningCommonsCode(incoming.getDiningCommonsCode());</span>
+<span class="fc" id="L108">        ucsbDiningCommonsMenuItems.setName(incoming.getName());</span>
+<span class="fc" id="L109">        ucsbDiningCommonsMenuItems.setStation(incoming.getStation());</span>
+
+<span class="fc" id="L111">        ucsbDiningCommonsMenuItemsRepository.save(ucsbDiningCommonsMenuItems);</span>
+
+<span class="fc" id="L113">        return ucsbDiningCommonsMenuItems;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
