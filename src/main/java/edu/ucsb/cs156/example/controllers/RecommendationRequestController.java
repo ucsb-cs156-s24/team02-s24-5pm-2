@@ -74,4 +74,49 @@ public class RecommendationRequestController extends ApiController {
 
         return savedRec;
     }
+
+    @Operation(summary= "Get a single Recommendation Letter request")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public RecommendationRequest getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        RecommendationRequest rec = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        return rec;
+    }
+
+    @Operation(summary= "Delete a single Recommendation Letter request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteRecommendationRequest(
+            @Parameter(name="id") @RequestParam Long id) {
+        RecommendationRequest rec = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        recommendationRequestRepository.delete(rec);
+        return genericMessage("RecommendationRequest with id %s deleted".formatted(id));
+    }
+
+    @Operation(summary= "Update a single Recommendation Letter request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public RecommendationRequest updateRecommendationRequest(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid RecommendationRequest incoming) {
+
+        RecommendationRequest rec = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        rec.setRequesterEmail(incoming.getRequesterEmail());
+        rec.setProfessorEmail(incoming.getProfessorEmail());
+        rec.setExplanation(incoming.getExplanation());
+        rec.setDateRequested(incoming.getDateRequested());
+        rec.setDateNeeded(incoming.getDateNeeded());
+        rec.setDone(incoming.getDone());
+
+        recommendationRequestRepository.save(rec);
+
+        return rec;
+    }
 }
