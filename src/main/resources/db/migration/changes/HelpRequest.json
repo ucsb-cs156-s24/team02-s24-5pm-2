@@ -2,8 +2,8 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "Articles-1",
-          "author": "NicoS",
+          "id": "HelpRequests-1",
+          "author": "AaronD",
           "preConditions": [
             {
               "onFail": "MARK_RAN"
@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "ARTICLES"
+                    "tableName": "HELPREQUESTS"
                   }
                 }
               ]
@@ -27,7 +27,7 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "CONSTRAINT_100"
+                        "primaryKeyName": "HelpRequestID"
                       },
                       "name": "ID",
                       "type": "BIGINT"
@@ -35,19 +35,34 @@
                   },
                   {
                     "column": {
-                      "name": "LOCAL_DATE_TIME",
+                      "name": "REQUEST_TIME",
                       "type": "TIMESTAMP"
                     }
                   },
                   {
                     "column": {
-                      "name": "TITLE",
+                      "constraints": {
+                        "nullable": false
+                      },
+                      "name": "SOLVED",
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "REQUESTER_EMAIL",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "URL",
+                      "name": "TEAM_ID",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "TABLE_OR_BREAKOUT_ROOM",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -56,15 +71,9 @@
                       "name": "EXPLANATION",
                       "type": "VARCHAR(255)"
                     }
-                  },
-                  {
-                    "column": {
-                      "name": "EMAIL",
-                      "type": "VARCHAR(255)"
-                    }
                   }
                 ],
-                "tableName": "ARTICLES"
+                "tableName": "HELPREQUESTS"
               }
             }
           ]

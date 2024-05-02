@@ -2,8 +2,8 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "Articles-1",
-          "author": "NicoS",
+          "id": "RecommendationRequest-1",
+          "author": "ukyl",
           "preConditions": [
             {
               "onFail": "MARK_RAN"
@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "ARTICLES"
+                    "tableName": "RECOMMENDATIONREQUEST"
                   }
                 }
               ]
@@ -27,7 +27,7 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "CONSTRAINT_100"
+                        "primaryKeyName": "CONSTRAINT_7"
                       },
                       "name": "ID",
                       "type": "BIGINT"
@@ -35,19 +35,13 @@
                   },
                   {
                     "column": {
-                      "name": "LOCAL_DATE_TIME",
-                      "type": "TIMESTAMP"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "TITLE",
+                      "name": "REQUESTER_EMAIL",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "URL",
+                      "name": "PROFESSOR_EMAIL",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -59,12 +53,24 @@
                   },
                   {
                     "column": {
-                      "name": "EMAIL",
-                      "type": "VARCHAR(255)"
+                      "name": "DATE_REQUESTED",
+                      "type": "TIMESTAMP"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "DATE_NEEDED",
+                      "type": "TIMESTAMP"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "DONE",
+                      "type": "BOOLEAN"
                     }
                   }
                 ],
-                "tableName": "ARTICLES"
+                "tableName": "RECOMMENDATIONREQUEST"
               }
             }
           ]

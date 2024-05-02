@@ -2,8 +2,8 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "Articles-1",
-          "author": "NicoS",
+          "id": "UCSBOrganizations-1",
+          "author": "NevinM",
           "preConditions": [
             {
               "onFail": "MARK_RAN"
@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "ARTICLES"
+                    "tableName": "UCSBORGANIZATIONS"
                   }
                 }
               ]
@@ -24,47 +24,37 @@
                 "columns": [
                   {
                     "column": {
-                      "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "CONSTRAINT_100"
+                        "primaryKeyName": "CONSTRAINT_20"
                       },
-                      "name": "ID",
-                      "type": "BIGINT"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "LOCAL_DATE_TIME",
-                      "type": "TIMESTAMP"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "TITLE",
+                      "name": "ORG_CODE",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "URL",
+                      "constraints": {
+                        "nullable": false
+                      },
+                      "name": "INACTIVE",
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "ORG_TRANSLATION_SHORT",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "EXPLANATION",
-                      "type": "VARCHAR(255)"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "EMAIL",
+                      "name": "ORG_TRANSLATION",
                       "type": "VARCHAR(255)"
                     }
                   }
                 ],
-                "tableName": "ARTICLES"
+                "tableName": "UCSBORGANIZATIONS"
               }
             }
           ]
