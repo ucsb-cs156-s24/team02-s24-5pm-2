@@ -40,17 +40,17 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
     @MockBean
     UserRepository userRepository;
 
-    // Tests for GET /api/UCSBOrganization/all
+    // Tests for GET
 
     @Test
     public void logged_out_users_cannot_get_all() throws Exception {
-        mockMvc.perform(get("/api/UCSBOrganization/all")).andExpect(status().is(403)); // logged out users can't get all
+        mockMvc.perform(get("/api/UCSBOrganization/all")).andExpect(status().is(403));  
     }
 
     @WithMockUser(roles = { "USER" })
     @Test
     public void logged_in_users_can_get_all() throws Exception {
-        mockMvc.perform(get("/api/UCSBOrganization/all")).andExpect(status().is(200)); // logged
+        mockMvc.perform(get("/api/UCSBOrganization/all")).andExpect(status().is(200)); 
     }
 
     @WithMockUser(roles = { "USER" })
@@ -137,7 +137,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
     @Test
         public void logged_out_users_cannot_get_by_id() throws Exception {
                 mockMvc.perform(get("/api/UCSBOrganization?orgCode=carrillo"))
-                                .andExpect(status().is(403)); // logged out users can't get by id
+                                .andExpect(status().is(403)); 
         }
 
         @WithMockUser(roles = { "USER" })
@@ -170,15 +170,15 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
         @Test
         public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
 
-                // arrange
+              
 
                 when(ucsbOrganizationsRepository.findById(eq("ortega"))).thenReturn(Optional.empty());
 
-                // act
+               
                 MvcResult response = mockMvc.perform(get("/api/UCSBOrganization?orgCode=ortega"))
                                 .andExpect(status().isNotFound()).andReturn();
 
-                // assert
+                
 
                 verify(ucsbOrganizationsRepository, times(1)).findById(eq("ortega"));
                 Map<String, Object> json = responseToJson(response);
@@ -186,7 +186,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
                 assertEquals("UCSBOrganizations with id ortega not found", json.get("message"));
         }
 
-        // Tests for DELETE /api/UCSBOrganization?...
+        // Tests for DELETE 
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
@@ -218,17 +218,17 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
          @Test
          public void admin_tries_to_delete_non_existant_organizations_and_gets_right_error_message()
                          throws Exception {
-                 // arrange
+                 
 
                  when(ucsbOrganizationsRepository.findById(eq("munger-hall"))).thenReturn(Optional.empty());
 
-                 // act
+                
                  MvcResult response = mockMvc.perform(
                                  delete("/api/UCSBOrganization?orgCode=munger-hall")
                                                  .with(csrf()))
                                  .andExpect(status().isNotFound()).andReturn();
 
-                 // assert
+               
                  verify(ucsbOrganizationsRepository, times(1)).findById("munger-hall");
                  Map<String, Object> json = responseToJson(response);
                  assertEquals("UCSBOrganizations with id munger-hall not found", json.get("message"));
@@ -239,7 +239,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
          @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_can_edit_an_existing_organization() throws Exception {
-                // arrange
+              
 
                 UCSBOrganizations carrilloOrig = UCSBOrganizations.builder()
                                 
@@ -262,7 +262,6 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
                 when(ucsbOrganizationsRepository.findById(eq("KRC"))).thenReturn(Optional.of(carrilloOrig));
                 // when(ucsbOrganizationsRepository.findById(eq("KRCS"))).thenReturn(Optional.of(carrilloEdited));
 
-                // act
                 MvcResult response = mockMvc.perform(
                                 put("/api/UCSBOrganization?orgCode=KRC")
                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -271,9 +270,9 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
-                // assert
+                
                 verify(ucsbOrganizationsRepository, times(1)).findById("KRC");
-                verify(ucsbOrganizationsRepository, times(1)).save(carrilloEdited); // should be saved with updated info
+                verify(ucsbOrganizationsRepository, times(1)).save(carrilloEdited); 
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }
@@ -282,7 +281,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
          @WithMockUser(roles = { "ADMIN", "USER" })
          @Test
          public void admin_cannot_edit_org_that_does_not_exist() throws Exception {
-                 // arrange
+                 
 
                  UCSBOrganizations editedCommons = UCSBOrganizations.builder()
                                  .orgCode("munger-hall")
@@ -295,7 +294,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
 
                  when(ucsbOrganizationsRepository.findById(eq("munger-hall"))).thenReturn(Optional.empty());
 
-                 // act
+               
                  MvcResult response = mockMvc.perform(
                                  put("/api/UCSBOrganization?orgCode=munger-hall")
                                                  .contentType(MediaType.APPLICATION_JSON)
@@ -304,7 +303,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
                                                  .with(csrf()))
                                  .andExpect(status().isNotFound()).andReturn();
 
-                 // assert
+                
                  verify(ucsbOrganizationsRepository, times(1)).findById("munger-hall");
                  Map<String, Object> json = responseToJson(response);
                  assertEquals("UCSBOrganizations with id munger-hall not found", json.get("message"));
