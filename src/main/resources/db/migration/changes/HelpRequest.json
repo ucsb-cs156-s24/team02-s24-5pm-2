@@ -2,7 +2,7 @@
     "databaseChangeLog": [
       {
         "changeSet": {
-          "id": "HelpRequest-1",
+          "id": "HelpRequests-1",
           "author": "AaronD",
           "preConditions": [
             {
@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "HELPREQUEST"
+                    "tableName": "HELPREQUESTS"
                   }
                 }
               ]
@@ -27,10 +27,25 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "CONSTRAINT_8"
+                        "primaryKeyName": "HelpRequestID"
                       },
                       "name": "ID",
                       "type": "BIGINT"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "RQUEST_TIME",
+                      "type": "TIMESTAMP"
+                    }
+                  },
+                  {
+                    "column": {
+                      "constraints": {
+                        "nullable": false
+                      },
+                      "name": "SOLVED",
+                      "type": "BOOLEAN"
                     }
                   },
                   {
@@ -53,27 +68,12 @@
                   },
                   {
                     "column": {
-                      "name": "REQUEST_TIME",
-                      "type": "TIMESTAMP"
-                    }
-                  },
-                  {
-                    "column": {
                       "name": "EXPLANATION",
                       "type": "VARCHAR(255)"
                     }
-                  },
-                  {
-                    "column": {
-                      "constraints": {
-                        "nullable": false
-                      },
-                      "name": "SOLVED",
-                      "type": "BOOLEAN"
-                    }
                   }
                 ],
-                "tableName": "HELPREQUEST"
+                "tableName": "HELPREQUESTS"
               }
             }
           ]
